@@ -1,41 +1,105 @@
-
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% block content %}
+
 <h2>Admin Dashboard</h2>
-<section>
-  <h3>Clients</h3>
-  <form method="post" action="{{ url_for('add_client') }}"><input name="name" placeholder="Client name"><button>Add</button></form>
-  <ul>{% for c in clients %}
-    <li>{{c.name}} <form style="display:inline" method="post" action="{{ url_for('delete_client', cid=c.id) }}"><button>Delete</button></form></li>
-  {% endfor %}</ul>
-</section>
-<section>
-  <h3>Employees</h3>
+
+<!-- CLIENTS -->
+<h3>Clients</h3>
+<form method="POST" action="/admin/clients/add">
+    <input type="text" name="name" placeholder="Client name">
+    <button>Add</button>
+</form>
+
 <ul>
-{% for e in employees %}
-  <li>{{ e.name }} ({{ e.client.name }}) - user: <b>{{ e.username }}</b> {% if e.plain_password %} - pwd: <code>{{ e.plain_password }}</code> {% endif %}
-    <a href="{{ url_for('employee_timeentries', emp_id=e.id) }}" class="btn btn-sm btn-primary">Manage Time Entries</a>
-    <form action="{{ url_for('delete_employee', eid=e.id) }}" method="post" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
-  </li>
+{% for c in clients %}
+    <li>{{ c.name }}
+        <form method="POST" action="/admin/clients/{{ c.id }}/delete" style="display:inline;">
+            <button>Delete</button>
+        </form>
+    </li>
 {% endfor %}
 </ul>
-</section>
-<section>
-  <h3>Time Entries</h3>
-  <a href="{{ url_for('timeentries') }}">Manage Time Entries</a>
-</section>
-<section>
-  <h3>Payroll</h3>
-  <form method="post" action="{{ url_for('generate_payroll') }}">
-    <select name="employee_id">{% for e in employees %}<option value="{{e.id}}">{{e.name}} ({{e.client.name}})</option>{% endfor %}</select>
-    <label>Start <input type="date" name="period_start" required></label>
-    <label>End <input type="date" name="period_end" required></label>
-    <button type="submit">Generate Payroll</button>
-  </form>
-  <h4>Recent payrolls</h4>
-  <ul>{% for p in payrolls %}
-    <li><a href="{{ url_for('view_payroll', pid=p.id) }}">{{p.employee.name}} — {{p.period_start}} to {{p.period_end}}</a></li>
-  {% endfor %}</ul>
-</section>
-<form action="{{ url_for('logout') }}"><button>Logout</button></form>
+
+<hr>
+
+<!-- EMPLOYEES -->
+<h3>Employees</h3>
+
+<!-- Add Employee Form -->
+<form method="POST" action="/admin/employees/add">
+
+    <input type="text" name="name" placeholder="Employee name" required>
+
+    <select name="client_id">
+        {% for c in clients %}
+            <option value="{{ c.id }}">{{ c.name }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="number" name="monthly" placeholder="Monthly Salary" step="0.01">
+
+    <select name="rest_day">
+        <option>Sunday</option>
+        <option>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+    </select>
+
+    <button>Add Employee</button>
+</form>
+
+<!-- Employee List -->
+<ul>
+{% for e in employees %}
+    <li>
+        <b>{{ e.name }}</b> ({{ e.client.name }})  
+        — user: <b>{{ e.username }}</b>  
+        — password: <b>{{ e.plain_password }}</b>
+
+        <!-- Delete -->
+        <form method="POST" action="/admin/employees/{{ e.id }}/delete" style="display:inline;">
+            <button>Delete</button>
+        </form>
+
+        <!-- Manage Time Entries -->
+        <a href="/admin/employees/{{ e.id }}/timeentries">
+            <button>Manage Time Entries</button>
+        </a>
+
+        <!-- Generate Payslip -->
+        <form method="POST" action="/admin/employees/{{ e.id }}/generate" style="display:inline;">
+            Start: <input type="date" name="period_start">
+            End: <input type="date" name="period_end">
+            <button>Generate Payslip</button>
+        </form>
+
+    </li>
+{% endfor %}
+</ul>
+
+<hr>
+
+<!-- GLOBAL TIME ENTRIES -->
+<h3>Time Entries</h3>
+<a href="/admin/timeentries">Manage Time Entries</a>
+
+<hr>
+
+<!-- Recent Payslips -->
+<h3>Recent Payrolls</h3>
+<ul>
+{% for p in payrolls %}
+    <li>
+        <a href="/payroll/{{ p.id }}">
+            {{ p.employee.name }} — {{ p.period_start }} → {{ p.period_end }}
+        </a>
+    </li>
+{% endfor %}
+</ul>
+
+<button onclick="location.href='/logout'">Logout</button>
+
 {% endblock %}
