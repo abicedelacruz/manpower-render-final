@@ -11,9 +11,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'change-this-secret-in-production'
 db = SQLAlchemy(app)
 
-# ---------------------------
-# MODELS
-# ---------------------------
 class Client(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, unique=True, nullable=False)
