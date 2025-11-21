@@ -1,0 +1,17 @@
+
+body{font-family:Inter,Segoe UI,Arial;margin:0;color:#222;background:#f5f7fb}
+.container{max-width:980px;margin:24px auto;padding:18px;background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+.topbar{background:#0b5cff;color:#fff;padding:10px 0}
+.topbar a{color:#fff;text-decoration:none;font-weight:600;margin-left:12px}
+.badge{background:#fff;color:#0b5cff;padding:3px 8px;border-radius:6px;margin-left:12px;font-size:12px}
+h2{margin-top:0}
+.flash{padding:8px;border-radius:6px;margin:8px 0}
+.flash.success{background:#e6ffed;border:1px solid #2ecc71}
+.flash.danger{background:#ffe6e6;border:1px solid #ff4d4d}
+.payslip header{display:flex;justify-content:space-between;align-items:center}
+.payslip .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0}
+.striped{width:100%;border-collapse:collapse;margin:10px 0}
+.striped th,.striped td{padding:8px;border:1px solid #eee;text-align:left}
+.net{background:#f0f6ff;padding:10px;border-radius:6px;text-align:center}
+button{background:#0b5cff;color:#fff;padding:8px 12px;border-radius:6px;border:none}
+table{width:100%}
