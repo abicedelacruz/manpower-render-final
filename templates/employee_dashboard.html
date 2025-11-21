@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome {{emp.name}}</h2>
+<p>Client: {{emp.client.name}}</p>
+<h3>Your payslips</h3>
+<ul>
+{% for p in payrolls %}
+  <li><a href="{{ url_for('view_payroll', pid=p.id) }}">{{p.period_start}} - {{p.period_end}}</a></li>
+{% endfor %}
+<form action="{{ url_for('logout') }}"><button>Logout</button></form>
+{% endblock %}

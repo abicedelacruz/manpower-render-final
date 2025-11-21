@@ -1,0 +1,25 @@
+
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ABIC Payroll</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="topbar"><div class="container"><a href="/">ABIC Manpower Payroll</a>
+    {% if session.admin %}<span class="badge">Admin</span>{% elif session.employee_id %}<span class="badge">Employee</span>{% endif %}
+    </div></header>
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for cat, msg in messages %}
+          <div class="flash {{cat}}">{{msg}}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="container">ABIC Manpower - Demo payslip generator</footer>
+</body>
+</html>

@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+{% block content %}
+  <div class="card" style="max-width:800px;margin:auto;">
+    <h3>Time entries for {{ emp.name }}</h3>
+    <form method="POST">
+      <input type="date" name="date" required>
+      <input type="time" name="time_in" required>
+      <input type="time" name="time_out" required>
+      <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+    <hr>
+    <h4>Generate Payslip</h4>
+    <form action="{{ url_for('employee_generate_payslip', emp_id=emp.id) }}" method="POST">
+       Start: <input type="date" name="period_start" required>
+       End: <input type="date" name="period_end" required>
+       <button class="btn btn-success" type="submit">Generate Payslip</button>
+    </form>
+    <hr>
+    <table class="table">
+      <tr><th>Date</th><th>In</th><th>Out</th></tr>
+      {% for e in entries %}
+      <tr><td>{{ e.date }}</td><td>{{ e.time_in }}</td><td>{{ e.time_out }}</td></tr>
+      {% endfor %}
+    </table>
+    <a href="{{ url_for('admin_dashboard') }}">Back</a>
+  </div>
+{% endblock %}

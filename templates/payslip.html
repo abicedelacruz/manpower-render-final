@@ -1,0 +1,33 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="payslip">
+  <header><h2>ABIC Manpower - Payslip</h2><div>Employee: {{payroll.employee_name}}</div><div>Period: {{payroll.period_start}} to {{payroll.period_end}}</div></header>
+  <section class="grid">
+    <div><strong>Monthly Salary</strong><div>₱{{payroll.monthly_salary}}</div></div>
+    <div><strong>Hourly Rate</strong><div>₱{{payroll.hourly_rate}}</div></div>
+    <div><strong>Regular Hours</strong><div>{{payroll.total_regular_hours}}</div></div>
+    <div><strong>Overtime Hours</strong><div>{{payroll.total_overtime_hours}}</div></div>
+    <div><strong>Night Diff Hours</strong><div>{{payroll.total_nd_hours}}</div></div>
+  </section>
+  <section>
+    <table class="striped">
+      <tr><th>Earnings</th><th>Amount</th></tr>
+      <tr><td>Regular Pay</td><td>₱{{payroll.regular_pay}}</td></tr>
+      <tr><td>OT Pay</td><td>₱{{payroll.ot_pay}}</td></tr>
+      <tr><td>ND Pay</td><td>₱{{payroll.nd_pay}}</td></tr>
+      <tr><td><strong>Gross</strong></td><td><strong>₱{{payroll.gross_pay}}</strong></td></tr>
+    </table>
+    <table class="striped">
+      <tr><th>Deductions</th><th>Amount</th></tr>
+      <tr><td>SSS</td><td>₱{{payroll.sss}}</td></tr>
+      <tr><td>PhilHealth</td><td>₱{{payroll.philhealth}}</td></tr>
+      <tr><td>Pag-IBIG</td><td>₱{{payroll.pagibig}}</td></tr>
+      <tr><td>Income Tax</td><td>₱{{payroll.income_tax}}</td></tr>
+      <tr><td><strong>Total Deductions</strong></td><td><strong>₱{{payroll.total_deductions}}</strong></td></tr>
+    </table>
+    <div class="net"><h3>Net Pay: ₱{{payroll.net_pay}}</h3></div>
+  </section>
+  <a href="{{ url_for('admin_dashboard') }}">Back</a>
+</div>
+{% endblock %}

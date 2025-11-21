@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h2>Admin Dashboard</h2>
+<section>
+  <h3>Clients</h3>
+  <form method="post" action="{{ url_for('add_client') }}"><input name="name" placeholder="Client name"><button>Add</button></form>
+  <ul>{% for c in clients %}
+    <li>{{c.name}} <form style="display:inline" method="post" action="{{ url_for('delete_client', cid=c.id) }}"><button>Delete</button></form></li>
+  {% endfor %}</ul>
+</section>
+<section>
+  <h3>Employees</h3>
+<ul>
+{% for e in employees %}
+  <li>{{ e.name }} ({{ e.client.name }}) - user: <b>{{ e.username }}</b> {% if e.plain_password %} - pwd: <code>{{ e.plain_password }}</code> {% endif %}
+    <a href="{{ url_for('employee_timeentries', emp_id=e.id) }}" class="btn btn-sm btn-primary">Manage Time Entries</a>
+    <form action="{{ url_for('delete_employee', eid=e.id) }}" method="post" style="display:inline"><button class="btn btn-sm btn-danger">Delete</button></form>
+  </li>
+{% endfor %}
+</ul>
+</section>
+<section>
+  <h3>Time Entries</h3>
+  <a href="{{ url_for('timeentries') }}">Manage Time Entries</a>
+</section>
+<section>
+  <h3>Payroll</h3>
+  <form method="post" action="{{ url_for('generate_payroll') }}">
+    <select name="employee_id">{% for e in employees %}<option value="{{e.id}}">{{e.name}} ({{e.client.name}})</option>{% endfor %}</select>
+    <label>Start <input type="date" name="period_start" required></label>
+    <label>End <input type="date" name="period_end" required></label>
+    <button type="submit">Generate Payroll</button>
+  </form>
+  <h4>Recent payrolls</h4>
+  <ul>{% for p in payrolls %}
+    <li><a href="{{ url_for('view_payroll', pid=p.id) }}">{{p.employee.name}} — {{p.period_start}} to {{p.period_end}}</a></li>
+  {% endfor %}</ul>
+</section>
+<form action="{{ url_for('logout') }}"><button>Logout</button></form>
+{% endblock %}
