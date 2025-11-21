@@ -332,23 +332,14 @@ def download_zip():
     return send_from_directory('/mnt/data', 'abic_payroll_app.zip', as_attachment=True)
 
 
-# ------------------
-# Ensure DB + Seed (Flask 3.x compatible, runs once on startup)
-# ------------------
-
 with app.app_context():
-    # Create all tables
     db.create_all()
 
-    # Seed only Mali Lending Corp
     default_clients = ['Mali Lending Corp.']
-    for cname in default_clients:
-        if not Client.query.filter_by(name=cname).first():
-            db.session.add(Client(name=cname))
-
+    for c in default_clients:
+        if not Client.query.filter_by(name=c).first():
+            db.session.add(Client(name=c))
     db.session.commit()
-
-
 
 
 # ------------------
